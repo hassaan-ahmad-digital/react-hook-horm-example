@@ -4,27 +4,28 @@
  */
 
 import { PasswordRule } from "../types/form";
+import { VALIDATION_MESSAGES, PASSWORD_VALIDATION_RULES } from "./validationMessages";
 
 export const passwordRules: PasswordRule[] = [
   {
     id: "minLength",
-    label: "At least 8 characters",
-    test: (password: string) => password.length >= 8,
+    label: VALIDATION_MESSAGES.password.minLength,
+    test: PASSWORD_VALIDATION_RULES.minLength,
   },
   {
     id: "hasUppercase",
-    label: "One uppercase letter (A-Z)",
-    test: (password: string) => /[A-Z]/.test(password),
+    label: VALIDATION_MESSAGES.password.hasUppercase,
+    test: PASSWORD_VALIDATION_RULES.hasUppercase,
   },
   {
     id: "hasLowercase",
-    label: "One lowercase letter (a-z)",
-    test: (password: string) => /[a-z]/.test(password),
+    label: VALIDATION_MESSAGES.password.hasLowercase,
+    test: PASSWORD_VALIDATION_RULES.hasLowercase,
   },
   {
     id: "hasNumber",
-    label: "One number (0-9)",
-    test: (password: string) => /\d/.test(password),
+    label: VALIDATION_MESSAGES.password.hasNumber,
+    test: PASSWORD_VALIDATION_RULES.hasNumber,
   },
 ];
 

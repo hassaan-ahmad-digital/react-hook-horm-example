@@ -4,6 +4,7 @@
  */
 
 import { FormField, SignupFormData } from "../types/form";
+import { VALIDATION_MESSAGES, PASSWORD_VALIDATION_RULES } from "./validationMessages";
 
 export const formFields: FormField[] = [
   {
@@ -12,12 +13,12 @@ export const formFields: FormField[] = [
     type: "text",
     placeholder: "Enter your first name",
     required: true,
-    validation: {
-      minLength: {
-        value: 2,
-        message: "First name must be at least 2 characters",
+          validation: {
+        minLength: {
+          value: 2,
+          message: `First name ${VALIDATION_MESSAGES.general.minName}`,
+        },
       },
-    },
   },
   {
     name: "lastName",
@@ -25,12 +26,12 @@ export const formFields: FormField[] = [
     type: "text",
     placeholder: "Enter your last name",
     required: true,
-    validation: {
-      minLength: {
-        value: 2,
-        message: "Last name must be at least 2 characters",
+          validation: {
+        minLength: {
+          value: 2,
+          message: `Last name ${VALIDATION_MESSAGES.general.minName}`,
+        },
       },
-    },
   },
   {
     name: "email",
@@ -38,12 +39,12 @@ export const formFields: FormField[] = [
     type: "email",
     placeholder: "Enter your email address",
     required: true,
-    validation: {
-      pattern: {
-        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-        message: "Please enter a valid email address",
+          validation: {
+        pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: VALIDATION_MESSAGES.general.email,
+        },
       },
-    },
   },
   {
     name: "password",
@@ -52,19 +53,15 @@ export const formFields: FormField[] = [
     placeholder: "Create a strong password",
     required: true,
     validation: {
-      minLength: {
-        value: 8,
-        message: "Password must be at least 8 characters",
-      },
       validate: {
+        minLength: (value: string) =>
+          PASSWORD_VALIDATION_RULES.minLength(value) || VALIDATION_MESSAGES.password.minLength,
         hasUppercase: (value: string) =>
-          /[A-Z]/.test(value) ||
-          "Password must contain at least one uppercase letter",
+          PASSWORD_VALIDATION_RULES.hasUppercase(value) || VALIDATION_MESSAGES.password.hasUppercase,
         hasLowercase: (value: string) =>
-          /[a-z]/.test(value) ||
-          "Password must contain at least one lowercase letter",
+          PASSWORD_VALIDATION_RULES.hasLowercase(value) || VALIDATION_MESSAGES.password.hasLowercase,
         hasNumber: (value: string) =>
-          /\d/.test(value) || "Password must contain at least one number",
+          PASSWORD_VALIDATION_RULES.hasNumber(value) || VALIDATION_MESSAGES.password.hasNumber,
       },
     },
   },
@@ -74,11 +71,11 @@ export const formFields: FormField[] = [
     type: "password",
     placeholder: "Confirm your password",
     required: true,
-    validation: {
-      validate: {
-        matchesPassword: (value: string, formValues: SignupFormData) =>
-          value === formValues.password || "Passwords do not match",
+          validation: {
+        validate: {
+          matchesPassword: (value: string, formValues: SignupFormData) =>
+            value === formValues.password || VALIDATION_MESSAGES.general.passwordMatch,
+        },
       },
-    },
   },
 ];

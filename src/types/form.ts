@@ -2,6 +2,8 @@
  * Type definitions for the signup form and field rendering system
  */
 
+import { FieldError } from 'react-hook-form';
+
 // Main form data structure
 export interface SignupFormData {
   firstName: string;
@@ -68,6 +70,7 @@ export interface PasswordChecklistProps {
   rules: PasswordRule[];
   isVisible: boolean;
   className?: string;
+  errors?: FieldError;
 }
 
 // Form submission result

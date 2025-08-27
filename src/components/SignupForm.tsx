@@ -30,7 +30,10 @@ const SignupForm: React.FC = () => {
       password: "",
       confirmPassword: "",
     },
+    criteriaMode: "all",
   });
+
+  console.log("errors", errors);
 
   // State for password visibility and checklist
   const [showPassword, setShowPassword] = useState(false);
@@ -158,6 +161,7 @@ const SignupForm: React.FC = () => {
                   password={passwordValue}
                   rules={passwordRules}
                   isVisible={showPasswordChecklist}
+                  errors={errors.password}
                 />
               </div>
             )}

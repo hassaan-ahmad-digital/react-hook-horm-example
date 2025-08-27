@@ -2,6 +2,9 @@
  * Password validation checklist component with real-time feedback
  * Shows validation requirements with visual indicators (checkmarks/X marks)
  * Demonstrates how to integrate custom validation with React Hook Form
+ * 
+ * Enhanced with React Hook Form error messages when criteriaMode: "all" is enabled
+ * Shows specific validation error messages instead of generic rule labels
  */
 
 import { Check, X } from "lucide-react";
@@ -13,6 +16,7 @@ const PasswordChecklist: React.FC<PasswordChecklistProps> = ({
   rules,
   isVisible,
   className = "",
+  errors, // Add errors prop to get React Hook Form validation messages
 }) => {
   // Get validation state for all rules
   const validationState = validatePassword(password);
@@ -36,13 +40,16 @@ const PasswordChecklist: React.FC<PasswordChecklistProps> = ({
       <div className="space-y-2">
         {rules.map((rule) => {
           const isValid = validationState[rule.id];
-
+          // Get the specific error message from React Hook Form if available
+          const errorData = errors?.types?.[rule.id];
+          const errorMessage = Array.isArray(errorData) ? errorData[0] : errorData;
+          
           return (
             <div
               key={rule.id}
               className={`
                 flex items-center space-x-2 text-sm transition-all duration-200
-                ${isValid ? "text-green-600" : "text-gray-500"}
+                ${isValid ? "text-green-600" : errorMessage ? "text-red-600" : "text-gray-500"}
               `}
             >
               {/* Validation Icon */}
@@ -53,6 +60,8 @@ const PasswordChecklist: React.FC<PasswordChecklistProps> = ({
                 ${
                   isValid
                     ? "bg-green-100 text-green-600"
+                    : errorMessage
+                    ? "bg-red-100 text-red-600"
                     : "bg-gray-100 text-gray-400"
                 }
               `}
@@ -64,14 +73,14 @@ const PasswordChecklist: React.FC<PasswordChecklistProps> = ({
                 )}
               </div>
 
-              {/* Rule Label */}
+              {/* Rule Label or Error Message */}
               <span
                 className={`
                 transition-all duration-200
                 ${isValid ? "font-medium" : "font-normal"}
               `}
               >
-                {rule.label}
+                {errorMessage || rule.label}
               </span>
             </div>
           );
